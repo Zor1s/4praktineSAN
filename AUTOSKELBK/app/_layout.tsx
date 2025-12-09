@@ -1,25 +1,53 @@
-import { Stack } from 'expo-router';
-import { AdProvider } from '../contexts/AdContext';
-import { UserProvider } from '../contexts/UserContext';
+import { Stack, useRouter } from "expo-router";
+import React, { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { InventoryProvider } from "./contexts/InventoryContext";
 
-export default function Layout() {
+function RootStack() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+
+      router.replace("/login");
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+
   return (
-    <UserProvider>
-      <AdProvider>
-        <Stack screenOptions={{ headerShown: true }}>
-          <Stack.Screen name="index" options={{ title: 'Skelbimai' }} />
-          <Stack.Screen name="add" options={{ title: 'Pridėti skelbimą' }} />
-          <Stack.Screen
-            name="auth/login"
-            options={{ headerTitle: 'Prisijungimas' }}
-          />
-          <Stack.Screen
-            name="auth/register"
-            options={{ headerTitle: 'Registracija' }}
-          />
-          <Stack.Screen name="ad/[id]" options={{ title: 'Skelbimo informacija' }} />
-        </Stack>
-      </AdProvider>
-    </UserProvider>
+<Stack
+  screenOptions={{
+    headerStyle: { backgroundColor: "#1F2933" },
+    headerTintColor: "#fff",
+    contentStyle: { backgroundColor: "#f2f2f2" },
+  }}
+>
+  <Stack.Screen name="index" options={{ title: "Pagrindinis" }} />
+  <Stack.Screen name="inventory/list" options={{ title: "Sandėlis" }} />
+  <Stack.Screen name="inventory/scan" options={{ title: "Skenavimas" }} />
+  <Stack.Screen name="inventory/[itemId]" options={{ title: "Prekė" }} /> {/* <- čia */}
+  <Stack.Screen name="dispatched/list" options={{ title: "Išvykusios prekės" }} />
+</Stack>
+
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <InventoryProvider>
+        <RootStack />
+      </InventoryProvider>
+    </AuthProvider>
   );
 }
