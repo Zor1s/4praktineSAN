@@ -3,12 +3,15 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA_wRI1KDDA0x9xvQbi2MIgzqDaQX5sn1E",
-  authDomain: "autoskelbk.firebaseapp.com",
-  projectId: "autoskelbk",
-  storageBucket: "autoskelbk.appspot.com",
-  messagingSenderId: "115076600985",
-  appId: "1:115076600985:web:040946f83374f27d41d408",
+
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "", 
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
 };
 
 const app = initializeApp(firebaseConfig);
