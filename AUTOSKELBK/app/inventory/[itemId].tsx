@@ -1,13 +1,13 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Button,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { InventoryItem, useInventory } from "../contexts/InventoryContext";
@@ -76,7 +76,7 @@ export default function ItemDetailScreen() {
     setLoading(true);
 
     try {
-      await removeItem(item.id, amount);
+      await removeItem(item.id, amount); //dispatchina
 
       Alert.alert(
         "Sėkmė",

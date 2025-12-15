@@ -8,7 +8,7 @@ export default function InventoryListScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchItems();
+    fetchItems(); //Ima duomenys
   }, []);
 
   const getAddedDate = (addedAt: any) => {
@@ -52,7 +52,7 @@ return (
       />
     </View>
 
-    <FlatList
+    <FlatList //atvaizduoja visas prekes
       data={items}
       keyExtractor={item => item.id}
       renderItem={renderItem}

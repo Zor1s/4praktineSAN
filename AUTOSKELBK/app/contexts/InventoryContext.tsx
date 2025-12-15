@@ -25,13 +25,13 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(
 );
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [items, setItems] = useState<InventoryItem[]>([]); //Juos ikelia cia
   const { user } = useAuth();
 
   const itemsCollection = collection(db, "inventory");
-  const dispatchedCollection = collection(db, "dispatched"); // ✅ NAUJA KOLEKCIJA
+  const dispatchedCollection = collection(db, "dispatched"); 
 
-  const fetchItems = async () => {
+  const fetchItems = async () => { //Pasieme duomenys is inventory kolekcijos fb
     if (!user) return;
 
     const snapshot = await getDocs(itemsCollection);
@@ -43,10 +43,10 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         : new Date(),
     })) as InventoryItem[];
 
-    setItems(data);
+    setItems(data); // Juos ikelia i atminti
   };
 
-  const addItem = async (item: Omit<InventoryItem, "id" | "addedAt">) => {
+  const addItem = async (item: Omit<InventoryItem, "id" | "addedAt">) => { //sukuria nauja preke
     if (!user) return;
 
     const existing = items.find((i) => i.name === item.name);
@@ -82,7 +82,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     await fetchItems();
   };
 
-  // ✅ ✅ ✅ PILNAI SUTVARKYTA DISPATCHED LOGIKA ✅ ✅ ✅
+ // istrynimo prekes logika
   const removeItem = async (itemId: string, amount: number) => {
     if (!user) return;
 
@@ -91,7 +91,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const remaining = item.quantity - amount;
 
-    // ✅ 1. ĮRAŠOM Į "dispatched"
+  // irasom i dispatched
     await addDoc(dispatchedCollection, {
       name: item.name,
       quantity: amount,
@@ -99,7 +99,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
       dispatchedBy: user.email,
     });
 
-    // ✅ 2. Atnaujinam arba ištrinam iš "inventory"
+    //Atnaujinam arba ištrinam iš "inventory"
     if (remaining <= 0) {
       await deleteDoc(doc(db, "inventory", itemId));
     } else {

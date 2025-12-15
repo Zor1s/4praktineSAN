@@ -4,13 +4,13 @@ import React, { useRef, useState } from "react";
 import { ScanResultItem } from "./ScanResultItem";
 
 import {
-    Alert,
-    Button,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Alert,
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { InventoryItem, useInventory } from "../contexts/InventoryContext";
@@ -27,7 +27,7 @@ export default function ScanScreen() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const [permission, requestPermission] = useCameraPermissions();
+  const [permission, requestPermission] = useCameraPermissions(); // prasome permission
 
   if (!permission) return <Text>Loading permissions…</Text>;
 
@@ -38,19 +38,19 @@ export default function ScanScreen() {
         <Button title="Grant permission" onPress={requestPermission} />
       </View>
     );
-
+  //skenavimo funkcija apdorojama
   const handleBarCodeScanned = async (result: any) => {
     if (scanLock.current) return;
     scanLock.current = true;
     setScanned(true);
 
-    const data = result.data;
+    const data = result.data; //nuskenuotas kodas
     const foundItem = items.find((i) => i.name === data);
-
+    //Patikrina ar tokia preke yra sandelyje
     if (foundItem) {
       setCurrentItem(foundItem);
     } else {
-      await addItem({
+      await addItem({ // Tokios prekes nera sukuriama nauja preke
         name: data,
         description: "Nuskenuota prekė",
         quantity: 1,
@@ -74,7 +74,7 @@ export default function ScanScreen() {
       return;
     }
 
-    await updateQuantity(currentItem.id, currentItem.quantity + num);
+    await updateQuantity(currentItem.id, currentItem.quantity + num); // kiekis padidedja
 
     Alert.alert("Pavyko!", `Pridėta ${num} vnt.`);
 
@@ -106,7 +106,7 @@ export default function ScanScreen() {
     setScanned(false);
     scanLock.current = false;
   };
-
+ // Leidziami skanavimai
   return (
     <View style={styles.container}>
       <CameraView
@@ -129,7 +129,7 @@ export default function ScanScreen() {
             setScanned(false);
             scanLock.current = false;
           }}
-          onRemove={async (itemId, qty) => {
+          onRemove={async (itemId, qty) => { //prekes istrynimas
             if (qty > currentItem.quantity) {
               Alert.alert("Klaida", "Negalite ištrinti daugiau nei turite!");
               return;

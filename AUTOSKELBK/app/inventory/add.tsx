@@ -26,7 +26,7 @@ export default function AddItemScreen() {
 
     setLoading(true);
     try {
-      await addItem({ name, description, quantity: quantityNumber, addedBy: "" }); // addedBy užpildomas context
+      await addItem({ name, description, quantity: quantityNumber, addedBy: "" }); // prideti preke
       Alert.alert("Sėkmė", "Prekė pridėta į sandėlį");
       router.back();
     } catch (error: any) {
